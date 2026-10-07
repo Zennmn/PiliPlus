@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:PiliPlus/common/assets.dart';
 import 'package:PiliPlus/common/constants.dart';
 import 'package:PiliPlus/common/style.dart';
+import 'package:PiliPlus/common/widgets/android_liquid_navigation_bar.dart';
 import 'package:PiliPlus/common/widgets/floating_navigation_bar.dart';
 import 'package:PiliPlus/common/widgets/flutter/pop_scope.dart';
 import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
@@ -316,19 +317,27 @@ class _MainAppState extends PopScopeState<MainApp>
     if (_mainController.navigationBars.length > 1) {
       if (_mainController.floatingNavBar) {
         bottomNav = Obx(
-          () => FloatingNavigationBar(
-            onDestinationSelected: _mainController.setIndex,
-            selectedIndex: _mainController.selectedIndex.value,
-            destinations: _mainController.navigationBars
-                .map(
-                  (e) => FloatingNavigationDestination(
-                    label: e.label,
-                    icon: _buildIcon(type: e),
-                    selectedIcon: _buildIcon(type: e, selected: true),
-                  ),
+          () => Platform.isAndroid
+              ? AndroidLiquidNavigationBar(
+                  onDestinationSelected: _mainController.setIndex,
+                  selectedIndex: _mainController.selectedIndex.value,
+                  destinations: _mainController.navigationBars,
+                  dynamicCount: _mainController.dynCount.value,
+                  dynamicBadgeMode: _mainController.dynamicBadgeMode,
                 )
-                .toList(),
-          ),
+              : FloatingNavigationBar(
+                  onDestinationSelected: _mainController.setIndex,
+                  selectedIndex: _mainController.selectedIndex.value,
+                  destinations: _mainController.navigationBars
+                      .map(
+                        (e) => FloatingNavigationDestination(
+                          label: e.label,
+                          icon: _buildIcon(type: e),
+                          selectedIcon: _buildIcon(type: e, selected: true),
+                        ),
+                      )
+                      .toList(),
+                ),
         );
       } else if (_mainController.enableMYBar) {
         bottomNav = Obx(

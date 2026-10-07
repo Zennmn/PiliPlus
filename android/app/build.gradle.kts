@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.konan.properties.Properties
 
 plugins {
     id("com.android.application")
+    id("org.jetbrains.kotlin.plugin.compose")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -29,7 +30,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.piliplus"
-        minSdk = flutter.minSdkVersion
+        minSdk = 33
         targetSdk = 37
         versionCode = flutter.versionCode
         versionName = flutter.versionName
@@ -55,6 +56,7 @@ android {
     }
 
     buildFeatures {
+        compose = true
         if (project.hasProperty("dev")) {
             resValues = true
         }
@@ -99,4 +101,10 @@ kotlin {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    implementation(project(":liquidglass"))
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.10.0")
+    implementation("androidx.savedstate:savedstate-ktx:1.4.0")
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'dart:math' as math;
 
 import 'package:PiliPlus/common/widgets/view_safe_area.dart';
@@ -90,7 +91,10 @@ class MainController extends GetxController
         : PageController(initialPage: selectedIndex.value);
 
     hideBottomBar =
-        !useSideBar && navigationBars.length > 1 && Pref.hideBottomBar;
+        !useSideBar &&
+        navigationBars.length > 1 &&
+        !(Platform.isAndroid && floatingNavBar) &&
+        Pref.hideBottomBar;
     if (hideBottomBar) {
       switch (barHideType) {
         case .instant:
